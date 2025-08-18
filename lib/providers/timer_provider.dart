@@ -24,7 +24,14 @@ class TimerProvider extends ChangeNotifier {
     final hours = totalSeconds ~/ 3600;
     final minutes = (totalSeconds % 3600) ~/ 60;
     final seconds = totalSeconds % 60;
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}.${(milliseconds ~/ 10).toString().padLeft(2, '0')}';
+    
+    if (hours > 0) {
+      // 当计时达到1小时时，显示完整的时:分:秒.毫秒格式
+      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}.${milliseconds.toString().padLeft(3, '0')}';
+    } else {
+      // 初始时不显示小时
+      return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}.${milliseconds.toString().padLeft(3, '0')}';
+    }
   }
 
   void setDescription(String desc) {
@@ -39,8 +46,8 @@ class TimerProvider extends ChangeNotifier {
     _isRunning = true;
     _elapsedMilliseconds = 0;
     
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      _elapsedMilliseconds += 100;
+    _timer = Timer.periodic(const Duration(milliseconds: 5), (timer) {
+      _elapsedMilliseconds += 5;
       notifyListeners();
     });
     
@@ -59,8 +66,8 @@ class TimerProvider extends ChangeNotifier {
     if (_isRunning || _startTime == null) return;
     
     _isRunning = true;
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      _elapsedMilliseconds += 100;
+    _timer = Timer.periodic(const Duration(milliseconds: 5), (timer) {
+      _elapsedMilliseconds += 5;
       notifyListeners();
     });
     

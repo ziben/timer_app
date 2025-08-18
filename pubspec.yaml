@@ -3,7 +3,7 @@ description: 一个基于Flutter的计时应用，支持每日多次计时记录
 
 publish_to: 'none'
 
-version: 1.0.0+20250817
+version: 1.0.1+20250818
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
