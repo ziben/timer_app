@@ -53,11 +53,15 @@ jobs:
         run: yes | sdkmanager --licenses
 
       - name: Configure Android keystore (optional)
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        shell: bash
         run: |
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/my-release-key.jks
-          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=my-release-key.jks\n" \
-            "$ANDROID_KEYSTORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_KEY_ALIAS" > android/key.properties
+          if [[ -n "${ANDROID_KEYSTORE_BASE64}" ]]; then
+            echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/my-release-key.jks
+            printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=my-release-key.jks\n" \
+              "$ANDROID_KEYSTORE_PASSWORD" "$ANDROID_KEY_PASSWORD" "$ANDROID_KEY_ALIAS" > android/key.properties
+          else
+            echo "ANDROID_KEYSTORE_BASE64 is empty; skip signing setup"
+          fi
         env:
             ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
             ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
