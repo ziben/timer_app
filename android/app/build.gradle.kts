@@ -5,6 +5,9 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+import java.text.SimpleDateFormat
+import java.util.Date
+
 android {
     namespace = "com.example.timer_app"
     compileSdk = flutter.compileSdkVersion
@@ -40,13 +43,12 @@ android {
 
     // 自定义APK输出名称
     applicationVariants.all {
-        outputs.all {
-            val versionName = this@all.versionName
-            val versionCode = this@all.versionCode
-            val date = java.text.SimpleDateFormat("yyyyMMdd").format(java.util.Date())
-            val buildType = this@all.buildType.name
-            val fileName = "TimerApp_v${versionName}_${date}_${buildType}.apk"
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = fileName
+        outputs.all { 
+            val versionName = defaultConfig.versionName
+            val versionCode = defaultConfig.versionCode
+            val date = SimpleDateFormat("yyyyMMdd").format(Date())
+            val buildType = buildType.name
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = "TimerApp_v${versionName}_${date}_${buildType}.apk"            
         }
     }
 }
