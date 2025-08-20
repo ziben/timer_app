@@ -39,7 +39,7 @@ jobs:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'gradle'
-
+         
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -48,9 +48,6 @@ jobs:
 
       - name: Flutter pub get
         run: flutter pub get
-
-      - name: Accept Android licenses
-        run: yes | sdkmanager --licenses
 
       - name: Configure Android keystore (optional)
         shell: bash
