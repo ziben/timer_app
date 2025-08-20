@@ -39,14 +39,14 @@ android {
     }
 
     // 自定义APK输出名称
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def versionName = variant.versionName
-            def versionCode = variant.versionCode
-            def date = new Date().format('yyyyMMdd')
-            def buildType = variant.buildType.name
-            def fileName = "TimerApp_v${versionName}_${date}_${buildType}.apk"
-            outputFileName = fileName
+    applicationVariants.all {
+        outputs.all {
+            val versionName = this@all.versionName
+            val versionCode = this@all.versionCode
+            val date = java.text.SimpleDateFormat("yyyyMMdd").format(java.util.Date())
+            val buildType = this@all.buildType.name
+            val fileName = "TimerApp_v${versionName}_${date}_${buildType}.apk"
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = fileName
         }
     }
 }
